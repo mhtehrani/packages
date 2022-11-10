@@ -55,7 +55,7 @@ if True:
     
     
     
-    #astype()
+    #dtypes | astype()
     if True:
         #Series dtypes
         series = pd.Series({'b':2, 'a':1, 'c':3, 'd':12, 'e':124, 'z':0})
@@ -148,6 +148,7 @@ if True:
         s.str.split(pat=' ', expand=False, regex=None) 
         s.str.split(pat=' ', expand=True, regex=None) #return df
         s.str.split(pat=' ', n=1, expand=False, regex=None)
+        s.str.split(pat=' ', n=1, expand=True, regex=None)
         s.str.split(pat=' ', n=2, expand=True, regex=None)
     
     
@@ -243,8 +244,7 @@ if True:
         
         #applies a function to all the elements
         df['sex'].apply(fun_gender)
-        df['sex'].apply(fun_gender, axis=0) #default
-        df['name'].apply(fun_gender)
+        df['name'].apply(fun_name)
     
     
     
@@ -496,6 +496,7 @@ if True:
             
             df1.join(df2, lsuffix='_left', rsuffix='_right') #join based on the row indicies
             df1.join(df2.set_index('name'), on='name', lsuffix='_left', rsuffix='_right', how='left') #use column "name" as the index
+            df1.join(df2.set_index('name'), lsuffix='_left', rsuffix='_right', how='left') # on foce the specific columns to be the same eventhou the index is not the same
             df1.join(df2.set_index('name'), on='name', lsuffix='_left', rsuffix='_right', how='right')
             df1.join(df2.set_index('name'), on='name', lsuffix='_left', rsuffix='_right', how='inner')
             df1.join(df2.set_index('name'), on='name', lsuffix='_left', rsuffix='_right', how='outer')
@@ -587,7 +588,7 @@ if True:
         df.duplicated()
         # dropping the duplicates
         df.drop_duplicates()
-        df.drop_duplicates(subset=['c1'])
+        df.drop_duplicates(subset=['c1']) #check the subset columns only for matching
     
     
     
@@ -650,6 +651,8 @@ if True:
         df.nunique() #number of unique values
         df.nunique(axis=0)
         df.nunique(axis=1)
+        
+        df.sort_index(axis = 0) #it sorts based on the index only NOT the actual data
     
     
     

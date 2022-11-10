@@ -323,8 +323,8 @@ A.pop()
 #list comprehension
 L = [1,2,3]
 M = [5,6,7]
-[[x, y] for x in L for y in M]
-[[x, y] for (x,y) in zip(L,M)]
+[[x, y] for x in L for y in M] #nested loop
+[[x, y] for (x,y) in zip(L,M)] #single joint loop
 [x*2 for x in L]
 a = [1,2,3,4,5]
 [1 if i >= 2 else 0 for i in a]
@@ -398,8 +398,8 @@ a & b #and operator (works the same as intersection())
 a.difference(b) # Values which exist in a but not in b (a.difference(b) != b.difference(a))
 a.symmetric_difference(b) #all the element in a or b minus the intersection (a.union(b) - a.intersection(b))
 a ^ b #^ operator (works the same as symmetric_difference())
-c.issubset(b) #check if a is a subset of b
-a.isdisjoint({1,3}) #check if a is disjoint with b (has no element in common)
+c.issubset(b) #check if c is a subset of b
+a.isdisjoint({1,3}) #check if a is disjoint with {1,3} (has no element in common)
 b.issuperset(c) #check if a is a superset of b (opposite of subset)
 
 
