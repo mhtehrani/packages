@@ -16,6 +16,12 @@ arr.shape
 arr.shape[0]
 
 
+#sorting an array
+arr = np.array([15,23,112,-83,-1, 2, 5], dtype=np.float32)
+np.sort(arr)
+np.sort(arr, axis=-1)
+
+
 # Print the representation of the array, which shows the array and data type
 print(repr(arr))
 print('Array b: {}'.format(repr(arr)))
@@ -51,6 +57,11 @@ np.array([np.nan, 1, 2], dtype=np.float32)
 
 # Infinity
 np.array([np.inf, 3], dtype=np.float32)
+
+
+# Counting the occurrence of each element. Each bin value is the occurrence of its index.
+arr = np.array([4,5,6,7,8,3,5,6,7,1,0,2,8,6,7,8,0,1,0,0])
+np.bincount(arr)
 
 
 # Creating ranged array (# of elements) or (start, end, step) excluding end (it's an iterator)
@@ -261,6 +272,7 @@ np.median(arr, axis=-1)
 np.sum(arr)
 np.sum(arr, axis=0)
 np.sum(arr, axis=1)
+np.average(arr, weights=arr) #it's a weighted average based on converting the weights to probabilities and then multiplying with the value
 
 
 # Returning cumulative summation

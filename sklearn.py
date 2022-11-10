@@ -10,8 +10,9 @@ https://scikit-learn.org/stable/modules/preprocessing.html#standardization-or-me
 if True:
     #StandardScaler
     ###############################################################################
-    #Z-Score Standardization Scaler
     if True:
+        #Z-Score Standardization Scaler
+        #https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
         data = [[8, 160, 18765],[11, 220, 11451], [1, 76, 16457], [3, 223, 23451], [7, 183, 17456], [20, 101, 10156]]
         
         from sklearn.preprocessing import StandardScaler
@@ -99,6 +100,24 @@ if True:
     
     
     
+    #FunctionTransformer
+    ###############################################################################
+    #Constructs a transformer from an arbitrary callable
+    if True:
+        #https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html#sklearn.preprocessing.FunctionTransformer
+        
+        import numpy as np
+        import pandas as pd
+        data_c = pd.DataFrame([[8, 160, 18765,'a'],[11, 220, 11451,'c'], [1, 76, 16457,'b'], 
+                               [3, 223, 23451,'a'], [7, 183, 17456,'b'], [20, 101, 10156, np.nan]]).values
+        
+        from sklearn.preprocessing import FunctionTransformer
+        transformer = FunctionTransformer(np.log)
+        transformer.fit(data_c)
+        transformer.transform(data_c)
+    
+    
+    
     #OrdinalEncoder
     ###############################################################################
     #Ordinal Encoder --> (0 to n_categories - 1) --> for input variables
@@ -156,6 +175,26 @@ if True:
         enc.transform(data_c[:,-1].reshape([-1,1])) #.toarray() if spars=True
         enc.categories_
         enc.inverse_transform(enc.transform(data_c[:,-1].reshape([-1,1]))) #create the labels from encoded
+    
+    
+    
+    #KBinsDiscretizer
+    ###############################################################################
+    #Bin continuous data into intervals.
+    if True:
+        #https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.KBinsDiscretizer.html#sklearn.preprocessing.KBinsDiscretizer
+        
+        from sklearn.datasets import load_iris #for classification
+        X_iris, true_labels = load_iris(return_X_y=True)
+        
+        from sklearn.preprocessing import KBinsDiscretizer
+        est = KBinsDiscretizer(n_bins=3, #>=2: number of bins to produce
+                               encode='onehot', # 'onehot' | 'onehot-dense' | 'ordinal'
+                               strategy='quantile') #'uniform' | 'quantile' | 'kmeans': Strategy used to define the widths of the bins.
+        
+        est = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='uniform')
+        est.fit(X_iris)
+        est.transform(X_iris)
     
     
     
@@ -234,8 +273,9 @@ if True:
     
     #ColumnTransformer
     ###############################################################################
-    #Applies transformers to columns of an array or pandas DataFrame
     if True:
+        #Applies transformers to columns of an array or pandas DataFrame
+        #https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html
         data = [[8, 160, 18765],[11, 220, 11451], [1, 76, 16457], [3, 223, 23451], [7, 183, 17456], [20, 101, 10156]]
         
         #the make_column_transformer automatically fill the names
@@ -243,10 +283,13 @@ if True:
         from sklearn.compose import make_column_transformer
         from sklearn.preprocessing import QuantileTransformer
         from sklearn.preprocessing import MinMaxScaler
-        #List of (name, transformer, columns) 
+        #List of (name, transformer, columns)  tuples
         ct = ColumnTransformer([("QuantileTransformer", QuantileTransformer(output_distribution='normal'), [1]), 
                                 ("MinMaxScaler", MinMaxScaler(), slice(0, 2))], 
                                remainder='drop') #'drop' | 'passthrough'
+        ct = ColumnTransformer([("QuantileTransformer", QuantileTransformer(output_distribution='normal'), [1]), 
+                                ("MinMaxScaler", 'passthrough', [2])], 
+                               remainder='drop')
         ct = make_column_transformer((QuantileTransformer(output_distribution='normal'), [1]), 
                                 (MinMaxScaler(), slice(0, 2))) #don't need []
         ct.fit(data)
@@ -791,6 +834,12 @@ if True:
         new_X = X.copy()
         y_hat = reg.predict(new_X) #Return prediction on new data
         
+        import pickle
+        # save the model to disk
+        filename = 'finalized_model.sav'
+        pickle.dump(reg, open(filename, 'wb'))
+        # load the model from disk
+        loaded_model = pickle.load(open(filename, 'rb'))
         
         ###linear regression with statsmodels
         if True:
